@@ -70,7 +70,7 @@ static int lept_parse_false(lept_context* c, lept_value* v) {
 }
 
 static int lept_parse_value(lept_context* c, lept_value* v) {
-    switch (*c->json) {
+    switch (*c->json) {//it means *(c->json) also means (c->json)[0]
         case 'n':  return lept_parse_null(c, v);	/* if starts with 'n' */
         case '\0': return LEPT_PARSE_EXPECT_VALUE;	/* if reach the end of string */
 		/*

@@ -42,6 +42,7 @@ static void test_parse_false() {
     EXPECT_EQ_INT(LEPT_FALSE, lept_get_type(&v));
 }
 
+
 #define TEST_NUMBER(expect, json)\
     do {\
         lept_value v;\
