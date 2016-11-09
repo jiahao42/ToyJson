@@ -20,11 +20,23 @@ static int test_pass = 0;
 
 #define EXPECT_EQ_INT(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%d")
 
+#define TEST_ERROR(error,json)\
+			do{\
+				lept_value v;\
+				v.type = LEPT_FALSE;\
+				EXPECT_EQ_INT(error, lept_parse(&v, json));\
+				EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));\
+			}while(0)
+
 static void test_parse_null() {
     lept_value v;
     v.type = LEPT_FALSE;
     EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "null"));/* test the return value of "null" */
     EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));/* test the type of "null" */
+	/*
+	or you can use this way, after refactoring
+	*/
+	TEST_ERROR(LEPT_PARSE_OK,"null");
 }
 
 static void test_parse_expect_value() {
