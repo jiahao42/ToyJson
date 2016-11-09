@@ -57,26 +57,43 @@ static void test_parse_root_not_singular() {
     EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));
 }
 
-static void test_parse() {
-    test_parse_null();
-    test_parse_expect_value();
-    test_parse_invalid_value();
-    test_parse_root_not_singular();
-}
-
 /*
 This function has been added by James on 2016/11/09
 */
 static void test_parse_true(){
-	
+    lept_value v;
+    v.type = LEPT_FALSE;
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "true"));
+    EXPECT_EQ_INT(LEPT_TRUE, lept_get_type(&v));
+	EXPECT_EQ_INT(LEPT_PARSE_ROOT_NOT_SINGULAR, lept_parse(&v, "true hello"));
+    EXPECT_EQ_INT(LEPT_TRUE, lept_get_type(&v));
 }
 
 /*
 This function has been added by James on 2016/11/09
 */
 static void test_parse_false(){
-	
+	lept_value v;
+    v.type = LEPT_FALSE;
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "false"));
+    EXPECT_EQ_INT(LEPT_FALSE, lept_get_type(&v));
+	EXPECT_EQ_INT(LEPT_PARSE_ROOT_NOT_SINGULAR, lept_parse(&v, "false hello"));
+    EXPECT_EQ_INT(LEPT_FALSE, lept_get_type(&v));
 }
+
+static void test_parse() {
+    test_parse_null();
+    test_parse_expect_value();
+    test_parse_invalid_value();
+    test_parse_root_not_singular();
+	/*
+	The following 2 lines has been modified by James on 2016/11/09
+	*/
+	test_parse_true();
+	test_parse_false();
+}
+
+
 int main() {
     test_parse();
     printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);

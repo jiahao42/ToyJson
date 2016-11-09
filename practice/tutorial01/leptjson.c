@@ -33,10 +33,51 @@ static int lept_parse_null(lept_context* c, lept_value* v) {
     
 }
 
+/*
+This function has been added by James on 2016/11/09
+*/
+static int lept_parse_true(lept_context* c, lept_value* v) {
+    EXPECT(c, 't');/* if the first character is 'n' */
+    if (c->json[0] != 'r' || c->json[1] != 'u' || c->json[2] != 'e')
+        return LEPT_PARSE_INVALID_VALUE;
+    c->json += 3;/* skip the next 3 chars */
+    v->type = LEPT_TRUE;
+	lept_parse_whitespace(&c);/* skip the spaces */
+	if (c->json[0] == '\0'){
+		return LEPT_PARSE_OK;
+	}else{
+		return LEPT_PARSE_ROOT_NOT_SINGULAR;
+	}
+    
+}
+
+/*
+This function has been added by James on 2016/11/09
+*/
+static int lept_parse_false(lept_context* c, lept_value* v) {
+    EXPECT(c, 'f');/* if the first character is 'n' */
+    if (c->json[0] != 'a' || c->json[1] != 'l' || c->json[2] != 's' || c->json[3] != 'e')
+        return LEPT_PARSE_INVALID_VALUE;
+    c->json += 4;/* skip the next 3 chars */
+    v->type = LEPT_FALSE;
+	lept_parse_whitespace(&c);/* skip the spaces */
+	if (c->json[0] == '\0'){
+		return LEPT_PARSE_OK;
+	}else{
+		return LEPT_PARSE_ROOT_NOT_SINGULAR;
+	}
+    
+}
+
 static int lept_parse_value(lept_context* c, lept_value* v) {
     switch (*c->json) {
         case 'n':  return lept_parse_null(c, v);	/* if starts with 'n' */
         case '\0': return LEPT_PARSE_EXPECT_VALUE;	/* if reach the end of string */
+		/*
+		The following 2 lines has been modified by James on 2016/11/09
+		*/
+		case 't' : return lept_parse_true(c,v);
+		case 'f' : return lept_parse_false(c,v);
         default:   return LEPT_PARSE_INVALID_VALUE;
     }
 }
