@@ -13,6 +13,10 @@ assert.h
 -
 stdlib.h
 -
+math.h
+-
+errno.h
+-
 
 /mnt/hgfs/For-Linux/FuckJson/practice/tutorial02/leptjson.h
 
