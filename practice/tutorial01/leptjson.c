@@ -8,7 +8,7 @@ typedef struct {
     const char* json;
 }lept_context;
 
-static void lept_parse_whitespace(lept_context* c) {
+static void lept_parse_whitespace(lept_context* c) {/* parse space */
     const char *p = c->json;
     while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r')
         p++;
@@ -16,18 +16,27 @@ static void lept_parse_whitespace(lept_context* c) {
 }
 
 static int lept_parse_null(lept_context* c, lept_value* v) {
-    EXPECT(c, 'n');
+    EXPECT(c, 'n');/* if the first character is 'n' */
     if (c->json[0] != 'u' || c->json[1] != 'l' || c->json[2] != 'l')
         return LEPT_PARSE_INVALID_VALUE;
-    c->json += 3;
+    c->json += 3;/* skip the next 3 chars */
     v->type = LEPT_NULL;
-    return LEPT_PARSE_OK;
+	/*
+	The following 6 lines has been modified by James on 2016/11/09
+	*/
+	lept_parse_whitespace(&c);/* skip the spaces */
+	if (c->json[0] == '\0'){
+		return LEPT_PARSE_OK;
+	}else{
+		return LEPT_PARSE_ROOT_NOT_SINGULAR;
+	}
+    
 }
 
 static int lept_parse_value(lept_context* c, lept_value* v) {
     switch (*c->json) {
-        case 'n':  return lept_parse_null(c, v);
-        case '\0': return LEPT_PARSE_EXPECT_VALUE;
+        case 'n':  return lept_parse_null(c, v);	/* if starts with 'n' */
+        case '\0': return LEPT_PARSE_EXPECT_VALUE;	/* if reach the end of string */
         default:   return LEPT_PARSE_INVALID_VALUE;
     }
 }

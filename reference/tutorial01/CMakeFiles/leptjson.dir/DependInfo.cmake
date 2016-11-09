@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/leptjson.c" "/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/CMakeFiles/leptjson.dir/leptjson.c.o"
+  "/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/leptjson.c" "/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/CMakeFiles/leptjson.dir/leptjson.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

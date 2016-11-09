@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01
+CMAKE_SOURCE_DIR = /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01
+CMAKE_BINARY_DIR = /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01
 
 # Include any dependencies generated for this target.
 include CMakeFiles/leptjson.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/leptjson.dir/flags.make
 
 CMakeFiles/leptjson.dir/leptjson.c.o: CMakeFiles/leptjson.dir/flags.make
 CMakeFiles/leptjson.dir/leptjson.c.o: leptjson.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/leptjson.dir/leptjson.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/leptjson.dir/leptjson.c.o   -c /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/leptjson.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/leptjson.dir/leptjson.c.o   -c /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/leptjson.c
 
 CMakeFiles/leptjson.dir/leptjson.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/leptjson.dir/leptjson.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/leptjson.c > CMakeFiles/leptjson.dir/leptjson.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/leptjson.c > CMakeFiles/leptjson.dir/leptjson.c.i
 
 CMakeFiles/leptjson.dir/leptjson.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/leptjson.dir/leptjson.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/leptjson.c -o CMakeFiles/leptjson.dir/leptjson.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/leptjson.c -o CMakeFiles/leptjson.dir/leptjson.c.s
 
 CMakeFiles/leptjson.dir/leptjson.c.o.requires:
 .PHONY : CMakeFiles/leptjson.dir/leptjson.c.o.requires
@@ -98,6 +98,6 @@ CMakeFiles/leptjson.dir/clean:
 .PHONY : CMakeFiles/leptjson.dir/clean
 
 CMakeFiles/leptjson.dir/depend:
-	cd /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01 /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01 /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01 /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01 /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/CMakeFiles/leptjson.dir/DependInfo.cmake --color=$(COLOR)
+	cd /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01 /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01 /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01 /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01 /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/CMakeFiles/leptjson.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/leptjson.dir/depend
 

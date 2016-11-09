@@ -23,8 +23,8 @@ static int test_pass = 0;
 static void test_parse_null() {
     lept_value v;
     v.type = LEPT_FALSE;
-    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "null"));
-    EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "null"));/* test the return value of "null" */
+    EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));/* test the type of "null" */
 }
 
 static void test_parse_expect_value() {
@@ -64,6 +64,19 @@ static void test_parse() {
     test_parse_root_not_singular();
 }
 
+/*
+This function has been added by James on 2016/11/09
+*/
+static void test_parse_true(){
+	
+}
+
+/*
+This function has been added by James on 2016/11/09
+*/
+static void test_parse_false(){
+	
+}
 int main() {
     test_parse();
     printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);

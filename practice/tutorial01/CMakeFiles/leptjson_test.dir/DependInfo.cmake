@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/test.c" "/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/CMakeFiles/leptjson_test.dir/test.c.o"
+  "/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/test.c" "/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/CMakeFiles/leptjson_test.dir/test.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/CMakeFiles/leptjson.dir/DependInfo.cmake"
+  "/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/CMakeFiles/leptjson.dir/DependInfo.cmake"
   )
 
 # The include file search paths:

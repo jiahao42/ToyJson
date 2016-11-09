@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/leptjson.h
+/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/leptjson.h
 
-/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/test.c
+/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/test.c
 stdio.h
 -
 stdlib.h
@@ -16,5 +16,5 @@ stdlib.h
 string.h
 -
 leptjson.h
-/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/leptjson.h
+/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/leptjson.h
 

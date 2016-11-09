@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/hgfs/For-Linux/FuckJson/practice/tutorial01
+# Install script for directory: /mnt/hgfs/For-Linux/FuckJson/reference/tutorial01
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
-file(WRITE "/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/${CMAKE_INSTALL_MANIFEST}" "")
+file(WRITE "/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/${CMAKE_INSTALL_MANIFEST}" "")
 foreach(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  file(APPEND "/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  file(APPEND "/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 endforeach()

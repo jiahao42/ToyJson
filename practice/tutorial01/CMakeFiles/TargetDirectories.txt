@@ -1,2 +1,2 @@
-/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/CMakeFiles/leptjson.dir
-/mnt/hgfs/For-Linux/FuckJson/reference/tutorial01/CMakeFiles/leptjson_test.dir
+/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/CMakeFiles/leptjson.dir
+/mnt/hgfs/For-Linux/FuckJson/practice/tutorial01/CMakeFiles/leptjson_test.dir
