@@ -34,9 +34,9 @@ static int lept_parse_literal(lept_context* c, lept_value* v, const char* litera
 }
 
 static int lept_parse_number(lept_context* c, lept_value* v) {
-    char* end;
+    /* char* end; */
 	const char *p = c->json;
-	size_t i = 0;
+	/* size_t i = 0; */
 	/*
 	number = [ "-" ] int [ frac ] [ exp ]
 	int = "0" / digit1-9 *digit
