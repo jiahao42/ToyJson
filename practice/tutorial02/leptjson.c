@@ -5,6 +5,8 @@
 #include <errno.h>
 
 #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
+#define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
+#define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
 
 typedef struct {
 	double n;
@@ -33,6 +35,38 @@ static int lept_parse_literal(lept_context* c, lept_value* v, const char* litera
 
 static int lept_parse_number(lept_context* c, lept_value* v) {
     char* end;
+	const char *p = c->json;
+	size_t i = 0;
+	/*
+	number = [ "-" ] int [ frac ] [ exp ]
+	int = "0" / digit1-9 *digit
+	frac = "." 1*digit
+	exp = ("e" / "E") ["-" / "+"] 1*digit
+	*/
+	if (*p == '-')	p++;
+	if (*p == '0'){/* if starts with '0' */
+		p++;
+	}else{
+		if (!ISDIGIT1TO9(*p)){
+			return LEPT_PARSE_INVALID_VALUE;
+		}
+		for(p++;ISDIGIT(*p);p++);/* skip all the digits */
+	}
+	if (*p == '.'){
+		p++;
+		if (!ISDIGIT(*p)){/* There is must a digit after the '.' */
+			return LEPT_PARSE_INVALID_VALUE;
+		}
+		for(p++;ISDIGIT(*p);p++);/* skip all the digits */
+	}
+	if (*p == 'e' || *p == 'E'){
+		p++;
+		if (*p == '+' || *p == '-')	p++;
+		for(p++;ISDIGIT(*p);p++);/* skip all the digits */
+	}
+	
+#if 0
+	/* The following is the stupid original code */
 	/* in case the number is 'nan' 'NAN' 'inf' 'INF' */
 	if(*c->json == 'i' || *c->json == 'I' || *c->json == 'n' || *c->json == 'N'){
 		return LEPT_PARSE_INVALID_VALUE;
@@ -54,22 +88,21 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
 	while(c->json[i] != '\0'){
 		if(c->json[i] == '.'){
 			i++;
-			if((c->json[i] - '0') > 9 || (c->json[i] - '0') < 0){
+			if(!ISDIGIT(c->json[i])){
 				return LEPT_PARSE_INVALID_VALUE;
 			}
 			break;
 		}
 		i++;
 	}
+#endif
 	/* in case the number is too big */
 	errno = 0;
-    v->n = strtod(c->json, &end);
-	if (v->n == HUGE_VAL || errno == ERANGE){
+    v->n = strtod(c->json, NULL);
+	if (errno == ERANGE && (v->n == HUGE_VAL || v->n == -HUGE_VAL)){ /* attention!!! */
 		return LEPT_PARSE_NUMBER_TOO_BIG;
 	}
-    if (c->json == end)/* if the str not change at all, it means there is no number */
-        return LEPT_PARSE_INVALID_VALUE;
-    c->json = end;
+    c->json = p;
     v->type = LEPT_NUMBER;
     return LEPT_PARSE_OK;
 }
