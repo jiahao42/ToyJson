@@ -105,42 +105,27 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
 			case '\\':
 				ch = *p++;	/* \"Hello\\nWorld\" */
 				switch(ch){
-					case 'n':
-						PUTC(c,(char)10);
-						break;
-					case '\\':
-						PUTC(c,(char)92);
-						break;
-					case 'b':
-						PUTC(c,(char)8);
-						break;
-					case 'f':
-						PUTC(c,(char)12);
-						break;
-					case 'r':
-						PUTC(c,(char)13);
-						break;
-					case 't':
-						PUTC(c,(char)9);
-						break;
-					case '/':
-						PUTC(c,(char)47);
-						break;
-					case '"':
-						PUTC(c,'"');
-						break;
+					case 'n': PUTC(c,(char)10);	break;
+					case '\\':PUTC(c,(char)92);	break;
+					case 'b': PUTC(c,(char)8);	break;
+					case 'f': PUTC(c,(char)12);	break;
+					case 'r': PUTC(c,(char)13);	break;
+					case 't': PUTC(c,(char)9);	break;
+					case '/': PUTC(c,(char)47);	break;
+					case '"': PUTC(c,'"');		break;
 					default:
+						c->top = head;
 						return LEPT_PARSE_INVALID_STRING_ESCAPE;
 				}
 				break;
             default:
+				/* the following code cannot place in front for it will confict with LEPT_PARSE_MISS_QUOTATION_MARK */
+				if (ch < '\x20'){
+					c->top = head;
+					return LEPT_PARSE_INVALID_STRING_CHAR;
+				}
                 PUTC(c, ch);
         }
-		/* the following code cannot place in front for it will confict with LEPT_PARSE_MISS_QUOTATION_MARK */
-		if (ch < '\x20'){
-			c->top = head;
-			return LEPT_PARSE_INVALID_STRING_CHAR;
-		}
     }
 }
 
