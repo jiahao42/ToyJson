@@ -92,7 +92,11 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
     EXPECT(c, '\"');	/* check and skip the first '\"' */
     p = c->json;
     for (;;) {
-        char ch = *p++;		
+        char ch = *p++;
+		/* unescaped = %x20-21 / %x23-5B / %x5D-10FFFF */
+		if (ch < '\x1F' || ch == '\x5C'){
+			return LEPT_PARSE_INVALID_STRING_CHAR;
+		}
         switch (ch) {
             case '\"': 		/* '\"' == '"' */
                 len = c->top - head;
@@ -140,6 +144,8 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
 					case '"':
 						PUTC(c,'"');
 						break;
+					default:
+						return LEPT_PARSE_INVALID_STRING_ESCAPE;
 				}
 				break;
             default:
