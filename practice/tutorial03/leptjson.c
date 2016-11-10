@@ -93,10 +93,6 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
     p = c->json;
     for (;;) {
         char ch = *p++;
-		/* unescaped = %x20-21 / %x23-5B / %x5D-10FFFF */
-		if (ch < '\x1F' || ch == '\x5C'){
-			return LEPT_PARSE_INVALID_STRING_CHAR;
-		}
         switch (ch) {
             case '\"': 		/* '\"' == '"' */
                 len = c->top - head;
@@ -107,17 +103,6 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
                 c->top = head;
                 return LEPT_PARSE_MISS_QUOTATION_MARK;
 			case '\\':
-			/*
-			   %x22 /          ; "    quotation mark  U+0022
-			   %x5C /          ; \    reverse solidus U+005C
-			   %x2F /          ; /    solidus         U+002F
-			   %x62 /          ; b    backspace       U+0008
-			   %x66 /          ; f    form feed       U+000C
-			   %x6E /          ; n    line feed       U+000A
-			   %x72 /          ; r    carriage return U+000D
-			   %x74 /          ; t    tab             U+0009
-			   %x75 4HEXDIG )  ; uXXXX                U+XXXX
-			*/
 				ch = *p++;	/* \"Hello\\nWorld\" */
 				switch(ch){
 					case 'n':
@@ -151,6 +136,11 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
             default:
                 PUTC(c, ch);
         }
+		/* the following code cannot place in front for it will confict with LEPT_PARSE_MISS_QUOTATION_MARK */
+		if (ch < '\x20'){
+			c->top = head;
+			return LEPT_PARSE_INVALID_STRING_CHAR;
+		}
     }
 }
 
