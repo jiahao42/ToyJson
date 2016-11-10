@@ -107,10 +107,8 @@ static void test_parse_number() {
 static void test_parse_string() {
     TEST_STRING("", "\"\"");
     TEST_STRING("Hello", "\"Hello\"");
-#if 0
     TEST_STRING("Hello\nWorld", "\"Hello\\nWorld\"");
     TEST_STRING("\" \\ / \b \f \n \r \t", "\"\\\" \\\\ \\/ \\b \\f \\n \\r \\t\"");
-#endif
 }
 
 #define TEST_ERROR(error, json)\

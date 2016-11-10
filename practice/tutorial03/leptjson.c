@@ -23,21 +23,21 @@ typedef struct {
 static void* lept_context_push(lept_context* c, size_t size) {
     void* ret;
     assert(size > 0);
-    if (c->top + size >= c->size) {
+    if (c->top + size >= c->size) {	/* check if need expand the size of stack */
         if (c->size == 0)
             c->size = LEPT_PARSE_STACK_INIT_SIZE;
         while (c->top + size >= c->size)
             c->size += c->size >> 1;  /* c->size * 1.5 */
         c->stack = (char*)realloc(c->stack, c->size);
     }
-    ret = c->stack + c->top;
-    c->top += size;
+    ret = c->stack + c->top;	/* return the void* pointer */
+    c->top += size;				/* grow the stack */
     return ret;
 }
 
 static void* lept_context_pop(lept_context* c, size_t size) {
     assert(c->top >= size);
-    return c->stack + (c->top -= size);
+    return c->stack + (c->top -= size);	/* return void* pointer represents the top element */
 }
 
 static void lept_parse_whitespace(lept_context* c) {
@@ -87,14 +87,14 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
 }
 
 static int lept_parse_string(lept_context* c, lept_value* v) {
-    size_t head = c->top, len;
+    size_t head = c->top, len; /* c.size = c.top = 0; */
     const char* p;
-    EXPECT(c, '\"');
+    EXPECT(c, '\"');	/* check and skip the first '\"' */
     p = c->json;
     for (;;) {
-        char ch = *p++;
+        char ch = *p++;		
         switch (ch) {
-            case '\"':
+            case '\"': 		/* '\"' == '"' */
                 len = c->top - head;
                 lept_set_string(v, (const char*)lept_context_pop(c, len), len);
                 c->json = p;
@@ -102,6 +102,46 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
             case '\0':
                 c->top = head;
                 return LEPT_PARSE_MISS_QUOTATION_MARK;
+			case '\\':
+			/*
+			   %x22 /          ; "    quotation mark  U+0022
+			   %x5C /          ; \    reverse solidus U+005C
+			   %x2F /          ; /    solidus         U+002F
+			   %x62 /          ; b    backspace       U+0008
+			   %x66 /          ; f    form feed       U+000C
+			   %x6E /          ; n    line feed       U+000A
+			   %x72 /          ; r    carriage return U+000D
+			   %x74 /          ; t    tab             U+0009
+			   %x75 4HEXDIG )  ; uXXXX                U+XXXX
+			*/
+				ch = *p++;	/* \"Hello\\nWorld\" */
+				switch(ch){
+					case 'n':
+						PUTC(c,(char)10);
+						break;
+					case '\\':
+						PUTC(c,(char)92);
+						break;
+					case 'b':
+						PUTC(c,(char)8);
+						break;
+					case 'f':
+						PUTC(c,(char)12);
+						break;
+					case 'r':
+						PUTC(c,(char)13);
+						break;
+					case 't':
+						PUTC(c,(char)9);
+						break;
+					case '/':
+						PUTC(c,(char)47);
+						break;
+					case '"':
+						PUTC(c,'"');
+						break;
+				}
+				break;
             default:
                 PUTC(c, ch);
         }
