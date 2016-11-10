@@ -186,14 +186,30 @@ static void test_access_null() {
     EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));
     lept_free(&v);
 }
-
+	
+/* completed by James on 2016/11/10 */
 static void test_access_boolean() {
-    /* \TODO */
     /* Use EXPECT_TRUE() and EXPECT_FALSE() */
+	lept_value v;
+	lept_init(&v);
+	lept_set_boolean(&v,0);
+	EXPECT_FALSE(lept_get_boolean(&v));
+	lept_free(&v);
+	
+	lept_init(&v);
+	lept_set_boolean(&v,1);
+	EXPECT_TRUE(lept_get_boolean(&v));
+	lept_free(&v);
+	
 }
 
+/* completed by James on 2016/11/10 */
 static void test_access_number() {
-    /* \TODO */
+	lept_value v;
+	lept_init(&v);
+	lept_set_number(&v,123.456);
+	EXPECT_EQ_DOUBLE(lept_get_number(&v),123.456);
+	lept_free(&v);
 }
 
 static void test_access_string() {
