@@ -8,6 +8,7 @@
 #include <math.h>    /* HUGE_VAL */
 #include <stdlib.h>  /* NULL, malloc(), realloc(), free(), strtod() */
 #include <string.h>  /* memcpy() */
+#include <stdio.h>
 
 #ifndef LEPT_PARSE_STACK_INIT_SIZE
 #define LEPT_PARSE_STACK_INIT_SIZE 256
@@ -91,12 +92,27 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
 }
 
 static const char* lept_parse_hex4(const char* p, unsigned* u) {
-    /* \TODO */
-    return p;
+    /* only the hex passed here */
+	size_t i;
+	unsigned exp = 0x100;
+	*u = 0;
+	for(i = 0; i < 2; i++){
+		char ch = *p++;
+		*u += (ch - '0') > 9 ? (ch - '0' - 7) * exp : (ch - '0') * exp;
+		exp /= 100;
+	}
+	if (*u < 0x10000) return p;
+	return NULL;
+    
 }
 
 static void lept_encode_utf8(lept_context* c, unsigned u) {
     /* \TODO */
+	if (u < 0x80){
+		PUTC(c,(char)u);
+	}else if (u < 0x7ff){
+		
+	}
 }
 
 #define STRING_ERROR(ret) do { c->top = head; return ret; } while(0)
@@ -129,7 +145,8 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
                         if (!(p = lept_parse_hex4(p, &u)))
                             STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX);
                         /* \TODO surrogate handling */
-                        lept_encode_utf8(c, u);
+						printf("%d\t",u);
+						lept_encode_utf8(c, u);
                         break;
                     default:
                         STRING_ERROR(LEPT_PARSE_INVALID_STRING_ESCAPE);

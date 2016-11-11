@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/hgfs/For-Linux/FuckJson/practice/tutorial04/leptjson.c
+crtdbg.h
+-
+leptjson.h
+/mnt/hgfs/For-Linux/FuckJson/practice/tutorial04/leptjson.h
+assert.h
+-
+errno.h
+-
+math.h
+-
+stdlib.h
+-
+string.h
+-
+stdio.h
+-
+
+/mnt/hgfs/For-Linux/FuckJson/practice/tutorial04/leptjson.h
+stddef.h
+-
+
