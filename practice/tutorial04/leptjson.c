@@ -95,11 +95,12 @@ static const char* lept_parse_hex4(const char* p, unsigned* u) {
     /* only the hex passed here */
 	size_t i;
 	unsigned exp = 0x1000;
+	assert(p != NULL);
 	*u = 0;
 	for(i = 0; i < 4; i++){ /* careful!!! the cycle times can be coufused!!! */
 		char ch = *p++;
 		/* \TODO seems like not take lowercased char into consideration */
-		*u += (ch - '0') > 9 ? (ch - '0' - 7) * exp : (ch - '0') * exp;
+		*u += (ch - '0') > 9 ? (ch - 'A' > 26 ? (ch - '0' - 39) * exp : (ch - '0' - 7) * exp) : (ch - '0') * exp;
 		exp /= 0x10;
 	}
 	/* printf("%d\t",*u); */
@@ -108,11 +109,13 @@ static const char* lept_parse_hex4(const char* p, unsigned* u) {
     
 }
 
+
 static void lept_encode_utf8(lept_context* c, unsigned u) {
     /* \TODO */
-	if (u < 0x80){
+	assert(u >= 0x00 && u <= 0x10ffff);
+	if (u <= 0x7f){
 		PUTC(c,(char)u);
-	}else if (u < 0x7ff){
+	}else if (u <= 0x7ff){
 		/*
 		0000 0000-0000 007F | 0xxxxxxx
 		0000 0080-0000 07FF | 110xxxxx 10xxxxxx
@@ -124,23 +127,26 @@ static void lept_encode_utf8(lept_context* c, unsigned u) {
 		high = 0xc0 + (u >> 6);
 		PUTC(c,high);
 		PUTC(c,low);
-	}else if (u < 0xffff){
+	}else if (u <= 0xffff){
 		unsigned char low,middle,high;
 		low = 0x80 + (u & 0x3f);
 		middle = 0x80 + ((u >> 6) & 0x3f);
 		high = 0xe0 + (u >> 12);
-		printf("%d ",(int)high);
-		printf("%d ",(int)middle);
-		printf("%d\t",(int)low);
 		PUTC(c,high);
 		PUTC(c,middle);
 		PUTC(c,low);
 	}else {
 		unsigned char first,second,third,forth;
-		first = 0x80 + (u & 0x3f);
-		second = 0x80 + ((u >> 6) & 0x3f);
-		third = 0x80 + ((u >> 12) & 0x3f);
-		forth = 0xf0 + (u >> 18);
+		forth = 0x80 + (u & 0x3f);
+		third = 0x80 + ((u >> 6) & 0x3f);
+		second = 0x80 + ((u >> 12) & 0x3f);
+		first = 0xf0 + (u >> 18);
+		/*
+		printf("%c ",first);
+		printf("%c ",second);
+		printf("%c ",third);
+		printf("%c\t",forth);
+		*/
 		PUTC(c,first);
 		PUTC(c,second);
 		PUTC(c,third);
@@ -178,6 +184,17 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
                         if (!(p = lept_parse_hex4(p, &u)))
                             STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX);
                         /* \TODO surrogate handling */
+						/* high = U+D800 至 U+DBFF	low = U+DC00 至 U+DFFF */
+						if (u >= 0xd800 && u <= 0xdbff && *p++ == '\\' && *p++ == 'u'){/* remember to skip the another '\u' */
+							unsigned high = u;
+							if (!(p = lept_parse_hex4(p, &u)))
+								STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX);
+							if (u < 0xdc00 || u > 0xdfff){
+								STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_SURROGATE);
+							}
+							/* codepoint = 0x10000 + (H − 0xD800) × 0x400 + (L − 0xDC00) */
+							u = 0x10000 + (high - 0xd800) * 0x400 + (u - 0xdc00);
+						}
 						lept_encode_utf8(c, u);
                         break;
                     default:
