@@ -94,13 +94,15 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
 static const char* lept_parse_hex4(const char* p, unsigned* u) {
     /* only the hex passed here */
 	size_t i;
-	unsigned exp = 0x100;
+	unsigned exp = 0x1000;
 	*u = 0;
-	for(i = 0; i < 2; i++){
+	for(i = 0; i < 4; i++){ /* careful!!! the cycle times can be coufused!!! */
 		char ch = *p++;
+		/* \TODO seems like not take lowercased char into consideration */
 		*u += (ch - '0') > 9 ? (ch - '0' - 7) * exp : (ch - '0') * exp;
-		exp /= 100;
+		exp /= 0x10;
 	}
+	/* printf("%d\t",*u); */
 	if (*u < 0x10000) return p;
 	return NULL;
     
@@ -111,7 +113,38 @@ static void lept_encode_utf8(lept_context* c, unsigned u) {
 	if (u < 0x80){
 		PUTC(c,(char)u);
 	}else if (u < 0x7ff){
-		
+		/*
+		0000 0000-0000 007F | 0xxxxxxx
+		0000 0080-0000 07FF | 110xxxxx 10xxxxxx
+		0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx
+		0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+		*/
+		unsigned char low,high;
+		low = 0x80 + (u & 0x3f);
+		high = 0xc0 + (u >> 6);
+		PUTC(c,high);
+		PUTC(c,low);
+	}else if (u < 0xffff){
+		unsigned char low,middle,high;
+		low = 0x80 + (u & 0x3f);
+		middle = 0x80 + ((u >> 6) & 0x3f);
+		high = 0xe0 + (u >> 12);
+		printf("%d ",(int)high);
+		printf("%d ",(int)middle);
+		printf("%d\t",(int)low);
+		PUTC(c,high);
+		PUTC(c,middle);
+		PUTC(c,low);
+	}else {
+		unsigned char first,second,third,forth;
+		first = 0x80 + (u & 0x3f);
+		second = 0x80 + ((u >> 6) & 0x3f);
+		third = 0x80 + ((u >> 12) & 0x3f);
+		forth = 0xf0 + (u >> 18);
+		PUTC(c,first);
+		PUTC(c,second);
+		PUTC(c,third);
+		PUTC(c,forth);
 	}
 }
 
@@ -145,7 +178,6 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
                         if (!(p = lept_parse_hex4(p, &u)))
                             STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX);
                         /* \TODO surrogate handling */
-						printf("%d\t",u);
 						lept_encode_utf8(c, u);
                         break;
                     default:
