@@ -99,9 +99,12 @@ static const char* lept_parse_hex4(const char* p, unsigned* u) {
 	*u = 0;
 	for(i = 0; i < 4; i++){ /* careful!!! the cycle times can be coufused!!! */
 		char ch = *p++;
-		/* \TODO seems like not take lowercased char into consideration */
-		*u += (ch - '0') > 9 ? (ch - 'A' > 26 ? (ch - '0' - 39) * exp : (ch - '0' - 7) * exp) : (ch - '0') * exp;
-		exp /= 0x10;
+		if ((ch >= '0' && ch <= '9') || ((ch >= 'A') && (ch <= 'F')) || ((ch >= 'a') && (ch <= 'f'))){
+			*u += (ch - '0') > 9 ? (ch - 'A' > 26 ? (ch - '0' - 39) * exp : (ch - '0' - 7) * exp) : (ch - '0') * exp;
+			exp /= 0x10;
+		}	else{
+			return NULL;
+		}
 	}
 	/* printf("%d\t",*u); */
 	if (*u < 0x10000) return p;
