@@ -188,8 +188,9 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
                             STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX);
                         /* \TODO surrogate handling */
 						/* high = U+D800 至 U+DBFF	low = U+DC00 至 U+DFFF */
-						if (u >= 0xd800 && u <= 0xdbff && *p++ == '\\' && *p++ == 'u'){/* remember to skip the another '\u' */
+						if (u >= 0xd800 && u <= 0xdbff ){/* remember to skip the another '\u' */
 							unsigned high = u;
+							if (*p++ != '\\' || *p++ != 'u') STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_SURROGATE);	
 							if (!(p = lept_parse_hex4(p, &u)))
 								STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX);
 							if (u < 0xdc00 || u > 0xdfff){
