@@ -5,7 +5,7 @@
 
 typedef enum { LEPT_NULL, LEPT_FALSE, LEPT_TRUE, LEPT_NUMBER, LEPT_STRING, LEPT_ARRAY, LEPT_OBJECT } lept_type;
 
-typedef struct lept_value lept_value;
+typedef struct lept_value lept_value;	/* forward declare */
 
 struct lept_value {
     union {
