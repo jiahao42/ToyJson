@@ -252,10 +252,39 @@ int lept_parse(lept_value* v, const char* json) {
     return ret;
 }
 
+#if 0
 void lept_free(lept_value* v) {
+	size_t i;
     assert(v != NULL);
-    if (v->type == LEPT_STRING)
-        free(v->u.s.s);
+    if (v->type == LEPT_STRING)	free(v->u.s.s);
+	if (v->type == LEPT_ARRAY){
+		lept_value* root = v->u.a.e;
+		lept_value* temp = root;
+		for(i = 0;i < v->u.a.size;i++){
+			/* if (temp->type == LEPT_STRING)	free(temp->u.s.s); */
+			/* if (temp->type == LEPT_ARRAY) */
+			lept_free(&v->u.a.e[i]);
+		}
+		free(root);
+	}
+    v->type = LEPT_NULL;
+}
+#endif
+
+void lept_free(lept_value* v) {
+    size_t i;
+    assert(v != NULL);
+    switch (v->type) {
+        case LEPT_STRING:
+            free(v->u.s.s);
+            break;
+        case LEPT_ARRAY:
+            for (i = 0; i < v->u.a.size; i++)
+                lept_free(&v->u.a.e[i]);
+            free(v->u.a.e);
+            break;
+        default: break;
+    }
     v->type = LEPT_NULL;
 }
 

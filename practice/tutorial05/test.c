@@ -142,20 +142,20 @@ static void test_parse_array() {
     EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(&v));
     EXPECT_EQ_SIZE_T(5, lept_get_array_size(&v));
 	
-	lept_value* temp = v.u.a.e++;
+	lept_value* temp = v.u.a.e;
     EXPECT_EQ_INT(LEPT_NULL, lept_get_type(temp));
 	
-	temp = v.u.a.e++;
+	++temp;
 	EXPECT_FALSE(lept_get_boolean(temp));
 	
-	temp = v.u.a.e++;
+	++temp;
 	EXPECT_TRUE(lept_get_boolean(temp));
 	
-	temp = v.u.a.e++;
+	++temp;
 	EXPECT_EQ_INT(LEPT_NUMBER, lept_get_type(temp));
     EXPECT_EQ_DOUBLE(123, lept_get_number(temp));
 	
-	temp = v.u.a.e++;
+	++temp;
 	EXPECT_EQ_STRING("abc",lept_get_string(temp),lept_get_string_length(temp));
 	
     lept_free(&v);
@@ -167,22 +167,22 @@ static void test_parse_array() {
     EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(&v));
     EXPECT_EQ_SIZE_T(4, lept_get_array_size(&v));
 	
-	temp = v.u.a.e++;
+	temp = v.u.a.e;
 	EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(temp));
 	EXPECT_EQ_SIZE_T(0, lept_get_array_size(temp));
 	
-	temp = v.u.a.e++;
+	++temp;
 	EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(temp));
 	EXPECT_EQ_SIZE_T(1, lept_get_array_size(temp));
 	EXPECT_EQ_DOUBLE(0, lept_get_number(temp->u.a.e));
 	
-	temp = v.u.a.e++;
+	++temp;
 	EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(temp));
 	EXPECT_EQ_SIZE_T(2, lept_get_array_size(temp));
 	EXPECT_EQ_DOUBLE(0, lept_get_number(temp->u.a.e++));
 	EXPECT_EQ_DOUBLE(1, lept_get_number(temp->u.a.e++));
 	
-	temp = v.u.a.e++;
+	++temp;
 	EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(temp));
 	EXPECT_EQ_SIZE_T(3, lept_get_array_size(temp));
 	EXPECT_EQ_DOUBLE(0, lept_get_number(temp->u.a.e++));
