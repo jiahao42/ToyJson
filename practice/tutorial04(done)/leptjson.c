@@ -109,7 +109,6 @@ static const char* lept_parse_hex4(const char* p, unsigned* u) {
 	/* printf("%d\t",*u); */
 	if (*u < 0x10000) return p;
 	return NULL;
-    
 }
 
 
