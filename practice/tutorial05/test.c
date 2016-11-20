@@ -227,6 +227,7 @@ static void test_parse_invalid_value() {
     /* invalid value in array */
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "[1,]");
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "[\"a\", nul]");
+
 }
 
 static void test_parse_root_not_singular() {
@@ -291,6 +292,7 @@ static void test_parse_miss_comma_or_square_bracket() {
     TEST_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[1}");
     TEST_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[1 2");
     TEST_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[[]");
+
 }
 
 
