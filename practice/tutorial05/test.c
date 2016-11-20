@@ -135,7 +135,7 @@ static void test_parse_array() {
     EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(&v));
     EXPECT_EQ_SIZE_T(0, lept_get_array_size(&v));
     lept_free(&v);
-	
+
 	/* the following tests has been added by James on 2016/11/19 */
 	lept_init(&v);
     EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "[ null , false , true , 123 , \"abc\" ]"));
@@ -160,7 +160,7 @@ static void test_parse_array() {
 	
     lept_free(&v);
 	
-	
+
 	/* the following tests has been added by James on 2016/11/19 */
 	lept_init(&v);
     EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "[ [ ] , [ 0 ] , [ 0 , 1 ] , [ 0 , 1 , 2 ] ]"));
@@ -175,19 +175,22 @@ static void test_parse_array() {
 	EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(temp));
 	EXPECT_EQ_SIZE_T(1, lept_get_array_size(temp));
 	EXPECT_EQ_DOUBLE(0, lept_get_number(temp->u.a.e));
-	
+
+
 	++temp;
 	EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(temp));
 	EXPECT_EQ_SIZE_T(2, lept_get_array_size(temp));
-	EXPECT_EQ_DOUBLE(0, lept_get_number(temp->u.a.e++));
-	EXPECT_EQ_DOUBLE(1, lept_get_number(temp->u.a.e++));
+	EXPECT_EQ_INT(LEPT_NUMBER, lept_get_type(&(temp->u.a.e)[0]));
+	EXPECT_EQ_DOUBLE(0, lept_get_number(&(temp->u.a.e)[0]));
+	EXPECT_EQ_INT(LEPT_NUMBER, lept_get_type(&(temp->u.a.e)[1]));
+	EXPECT_EQ_DOUBLE(1, lept_get_number(&(temp->u.a.e)[1])); 
 	
 	++temp;
 	EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(temp));
 	EXPECT_EQ_SIZE_T(3, lept_get_array_size(temp));
-	EXPECT_EQ_DOUBLE(0, lept_get_number(temp->u.a.e++));
-	EXPECT_EQ_DOUBLE(1, lept_get_number(temp->u.a.e++));
-	EXPECT_EQ_DOUBLE(2, lept_get_number(temp->u.a.e++));
+	EXPECT_EQ_DOUBLE(0, lept_get_number(&(temp->u.a.e)[0]));
+	EXPECT_EQ_DOUBLE(1, lept_get_number(&(temp->u.a.e)[1]));
+	EXPECT_EQ_DOUBLE(2, lept_get_number(&(temp->u.a.e)[2]));
 	
     lept_free(&v);
 }
