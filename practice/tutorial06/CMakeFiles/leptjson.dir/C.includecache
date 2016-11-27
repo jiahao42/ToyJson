@@ -21,6 +21,8 @@ stdlib.h
 -
 string.h
 -
+stdio.h
+-
 
 /mnt/hgfs/For-Linux/FuckJson/practice/tutorial06/leptjson.h
 stddef.h
