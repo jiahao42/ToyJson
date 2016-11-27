@@ -144,7 +144,6 @@ static int lept_parse_string_raw(lept_context* c, char** str, size_t* len) {
         switch (ch) {
             case '\"':
                 *len = c->top - head;
-				/* *str = (const char*)lept_context_pop(c,*len); */
 				memcpy((*str = (char*)malloc(*len)),lept_context_pop(c,*len), *len);
                 c->json = p;
                 return LEPT_PARSE_OK;
@@ -260,11 +259,12 @@ static int lept_parse_object(lept_context* c, lept_value* v) {
     size = 0;
     for (;;) {
         lept_init(&m.v);
-		/* static int lept_parse_string_raw(lept_context* c, char** str, size_t* len) */
+		if (*c->json != '\"'){
+			ret = LEPT_PARSE_MISS_KEY;
+			break;
+		}
 		if ((ret = lept_parse_string_raw(c,&m.k,&m.klen) != LEPT_PARSE_OK))
 			break;
-		printf("key: %s\t",m.k);
-		printf("len: %d\n",m.klen);
 		lept_parse_whitespace(c);
 		EXPECT(c,':');
 		lept_parse_whitespace(c);
@@ -287,6 +287,7 @@ static int lept_parse_object(lept_context* c, lept_value* v) {
 		lept_parse_whitespace(c);
     }
     /* \todo Pop and free members on the stack */
+	c->top = 0;
     return ret;
 }
 
